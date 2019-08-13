@@ -7,17 +7,21 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-//import android.support.v7.app.ActionBarActivity;
-//import android.support.v7.app.AppCompatActivity;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,14 +40,17 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 1;
     private final String UUID_STRING_WELL_KNOWN_SPP =
             "00001101-0000-1000-8000-00805F9B34FB";
+    BluetoothDevices BluetoothDevice;
     BluetoothAdapter bluetoothAdapter;
-    ArrayList<BluetoothDevice> pairedDeviceArrayList;
+    ArrayList<BluetoothDevices> pairedDevicesNamesSpinner;
     //TextView textInfo;
     TextView textStatus;
-    ListView listViewPairedDevice;
-    RelativeLayout inputPane;
-    Button btnConnection1, btnConnection1Off, btnConnection2, btnConnection2Off, btnConnection3, btnConnection3Off, btnConnection4, btnConnection4Off;
-    ArrayAdapter<BluetoothDevice> pairedDeviceAdapter;
+    Spinner spinnerPairedDevice;
+    LinearLayout inputPane;
+    Switch switchBtn1,switchBtn2,switchBtn3,switchBtn4,switchBtnAllOff;
+    ImageView imageAppliance1,imageAppliance2,imageAppliance3,imageAppliance4,imageAllOff;
+    Button btnConnect,btnDisconnect;
+    ArrayAdapter<BluetoothDevices> pairedDeviceAdapterSpinner;
     ThreadConnectBTdevice myThreadConnectBTdevice;
     ThreadConnected myThreadConnected;
     private UUID myUUID;
@@ -53,101 +62,178 @@ public class MainActivity extends AppCompatActivity {
 
         // textInfo = (TextView)findViewById(R.id.info);
         textStatus = (TextView) findViewById(R.id.status);
-        listViewPairedDevice = (ListView) findViewById(R.id.pairedlist);
+        spinnerPairedDevice = (Spinner) findViewById(R.id.pairedlistSpinner);
+        btnConnect = (Button) findViewById(R.id.connect);
+        btnDisconnect = (Button) findViewById(R.id.disconnect);
+        inputPane = (LinearLayout) findViewById(R.id.inputpane);
 
-        inputPane = (RelativeLayout) findViewById(R.id.inputpane);
+        btnConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myThreadConnectBTdevice = new ThreadConnectBTdevice(BluetoothDevice.getDevice());
+                myThreadConnectBTdevice.start();
+            }
+        });
 
+        imageAppliance1 = (ImageView) findViewById(R.id.imageAppliance1);
+        switchBtn1 = (Switch) findViewById(R.id.switchBtn1);
+        switchBtn1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-        btnConnection1 = (Button) findViewById(R.id.btnConnection1);
-        btnConnection1.setOnClickListener(new View.OnClickListener() {
+                if(isChecked)
+                {
+                    if (myThreadConnected != null) {
+                        int data = 101;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_on_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
 
-            public void onClick(View v) {
+                    }
+                }
+                else
+                {
+                    if (myThreadConnected != null) {
+                        int data = 102;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
 
-                if (myThreadConnected != null) {
-                    int data = 101;
-                    myThreadConnected.write(data);
+                    }
                 }
             }
         });
 
-        btnConnection1Off = (Button) findViewById(R.id.btnConnection1Off);
-        btnConnection1Off.setOnClickListener(new View.OnClickListener() {
+        imageAppliance2 = (ImageView) findViewById(R.id.imageAppliance2);
+        switchBtn2 = (Switch) findViewById(R.id.switchBtn2);
+        switchBtn2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-            public void onClick(View v) {
+                if(isChecked)
+                {
+                    if (myThreadConnected != null) {
+                        int data = 103;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_on_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
 
-                if (myThreadConnected != null) {
-                    int data = 102;
-                    myThreadConnected.write(data);
+                    }
+                }
+                else
+                {
+                    if (myThreadConnected != null) {
+                        int data = 104;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
+
+                    }
                 }
             }
         });
 
-        btnConnection2 = (Button) findViewById(R.id.btnConnection2);
-        btnConnection2.setOnClickListener(new View.OnClickListener() {
+        imageAppliance3 = (ImageView) findViewById(R.id.imageAppliance3);
+        switchBtn3 = (Switch) findViewById(R.id.switchBtn3);
+        switchBtn3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-            public void onClick(View v) {
+                if(isChecked)
+                {
+                    if (myThreadConnected != null) {
+                        int data = 105;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_on_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
 
-                if (myThreadConnected != null) {
-                    int data = 103;
-                    myThreadConnected.write(data);
+                    }
+                }
+                else
+                {
+                    if (myThreadConnected != null) {
+                        int data = 106;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
+
+                    }
                 }
             }
         });
 
-        btnConnection2Off = (Button) findViewById(R.id.btnConnection2Off);
-        btnConnection2Off.setOnClickListener(new View.OnClickListener() {
+        imageAppliance4 = (ImageView) findViewById(R.id.imageAppliance4);
+        switchBtn4 = (Switch) findViewById(R.id.switchBtn4);
+        switchBtn4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-            public void onClick(View v) {
+                if(isChecked)
+                {
+                    if (myThreadConnected != null) {
+                        int data = 107;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_on_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
 
-                if (myThreadConnected != null) {
-                    int data = 104;
-                    myThreadConnected.write(data);
+                    }
                 }
-            }
-        });
-        btnConnection3 = (Button) findViewById(R.id.btnConnection3);
-        btnConnection3.setOnClickListener(new View.OnClickListener() {
+                else
+                {
+                    if (myThreadConnected != null) {
+                        int data = 108;
+                        myThreadConnected.write(data);
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                    }else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
 
-            public void onClick(View v) {
-
-                if (myThreadConnected != null) {
-                    int data = 105;
-                    myThreadConnected.write(data);
-                }
-            }
-        });
-
-        btnConnection3Off = (Button) findViewById(R.id.btnConnection3Off);
-        btnConnection3Off.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-                if (myThreadConnected != null) {
-                    int data = 106;
-                    myThreadConnected.write(data);
-                }
-            }
-        });
-        btnConnection4 = (Button) findViewById(R.id.btnConnection4);
-        btnConnection4.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View v) {
-
-                if (myThreadConnected != null) {
-                    int data = 107;
-                    myThreadConnected.write(data);
+                    }
                 }
             }
         });
 
-        btnConnection4Off = (Button) findViewById(R.id.btnConnection4Off);
-        btnConnection4Off.setOnClickListener(new View.OnClickListener() {
+        imageAllOff = (ImageView) findViewById(R.id.imageAllOff);
+        switchBtnAllOff = (Switch) findViewById(R.id.switchBtnAllOff);
+        switchBtnAllOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-            public void onClick(View v) {
+                if(isChecked)
+                {
+                    if (myThreadConnected != null) {
+                        int[] data = new int[]{102,104,106,108};
+                        for(int i =0;i<4;i++) {
+                            myThreadConnected.write(data[i]);
+                        }
+                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                        imageAppliance2.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                        imageAppliance3.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                        imageAppliance4.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                    }
+                }
+                else{
+                    Toast.makeText(MainActivity.this,
+                            "Please connect a bluetooth device.",
+                            Toast.LENGTH_LONG).show();
 
-                if (myThreadConnected != null) {
-                    int data = 108;
-                    myThreadConnected.write(data);
                 }
             }
         });
@@ -182,7 +268,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         //Turn ON BlueTooth if it is OFF
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -190,42 +275,51 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setup();
+
     }
 
     private void setup() {
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if (pairedDevices.size() > 0) {
-            pairedDeviceArrayList = new ArrayList<>();
-
-            for (BluetoothDevice device : pairedDevices) {
-                String deviceName = device.getName();
-                pairedDeviceArrayList.add(device);
+            pairedDevicesNamesSpinner = new ArrayList<BluetoothDevices>();
+            try {
+                for (BluetoothDevice device : pairedDevices) {
+                    String deviceName = device.getName();
+                    pairedDevicesNamesSpinner.add(new BluetoothDevices(device, deviceName));
+                    Log.d("Device Creation","Adding New Device! : "+deviceName);
+                }
+            }catch (NullPointerException e){
+                e.printStackTrace();
             }
 
-            pairedDeviceAdapter = new ArrayAdapter<BluetoothDevice>(this,
-                    android.R.layout.simple_list_item_1, pairedDeviceArrayList);
-            listViewPairedDevice.setAdapter(pairedDeviceAdapter);
-
-            listViewPairedDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+            pairedDeviceAdapterSpinner = new ArrayAdapter<BluetoothDevices>(this, android.R.layout.simple_spinner_dropdown_item, pairedDevicesNamesSpinner);
+            spinnerPairedDevice.setAdapter(pairedDeviceAdapterSpinner);
+            spinnerPairedDevice.setPrompt("Select a Bluetooth device");
+            spinnerPairedDevice.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    BluetoothDevice device =
-                            (BluetoothDevice) parent.getItemAtPosition(position);
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    BluetoothDevice = (BluetoothDevices) parent.getSelectedItem();
                     Toast.makeText(MainActivity.this,
-                            "Name: " + device.getName() + "\n"
-                                    + "Address: " + device.getAddress() + "\n"
-                                    + "BondState: " + device.getBondState() + "\n"
-                                    + "BluetoothClass: " + device.getBluetoothClass() + "\n"
-                                    + "Class: " + device.getClass(),
+                            "Name: " + BluetoothDevice.getDevice().getName() + "\n"
+                                    + "Address: " + BluetoothDevice.getDevice().getAddress(),
                             Toast.LENGTH_LONG).show();
 
-                    textStatus.setText("Connected");
-                    myThreadConnectBTdevice = new ThreadConnectBTdevice(device);
-                    myThreadConnectBTdevice.start();
+//                    Toast.makeText(MainActivity.this,
+//                            "Name: " + BluetoothDevice.getDevice().getName() + "\n"
+//                                    + "Address: " + BluetoothDevice.getDevice().getAddress() + "\n"
+//                                    + "BondState: " + BluetoothDevice.getDevice().getBondState() + "\n"
+//                                    + "BluetoothClass: " + BluetoothDevice.getDevice().getBluetoothClass() + "\n"
+//                                    + "Class: " + BluetoothDevice.getDevice().getClass(),
+//                            Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
                 }
             });
+
         }
     }
 
@@ -233,10 +327,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
+        Log.d("Destroying App","Destroy algo running");
         if (myThreadConnectBTdevice != null) {
             myThreadConnectBTdevice.cancel();
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -287,6 +383,13 @@ public class MainActivity extends AppCompatActivity {
             try {
                 bluetoothSocket.connect();
                 success = true;
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        textStatus.setText("Connected!");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
 
@@ -295,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
-                        textStatus.setText("Something wrong bluetoothSocket.connect(): \n" + eMessage);
+                        textStatus.setText("Problem occurred with bluetoothSocket.connect(): \n" + eMessage);
                     }
                 });
 
@@ -318,7 +421,6 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         //textStatus.setText(msgconnected);
 
-                        listViewPairedDevice.setVisibility(View.GONE);
                         inputPane.setVisibility(View.VISIBLE);
                     }
                 });
@@ -330,7 +432,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void cancel() {
-
+            if (myThreadConnected != null) {
+                int[] data = new int[]{102,104,106,108};
+                for(int i =0;i<4;i++) {
+                    myThreadConnected.write(data[i]);
+                }
+                imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                imageAppliance2.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                imageAppliance3.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                imageAppliance4.setImageResource(R.drawable.ic_blur_off_black_24dp);
+            }
             Toast.makeText(getApplicationContext(),
                     "close bluetoothSocket",
                     Toast.LENGTH_LONG).show();
