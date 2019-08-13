@@ -1,89 +1,301 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/colorBackground"
+    android:padding="10dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/inputpane"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-
-
-        <ListView
-            android:id="@+id/pairedlist"
-            android:layout_width="318dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="400dp"/>
-
-
-        <Button
-            android:id="@+id/btnConnection4Off"
-            android:layout_width="130dp"
+        android:orientation="vertical"
+        android:gravity="center">
+        <LinearLayout
+            android:id="@+id/linearLayout01"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="140dp"
-            android:layout_marginTop="180dp"
-            android:text="Connection 4 Off" />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="145dp"
+                android:layout_height="150dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorWhite">
 
-        <Button
-            android:id="@+id/btnConnection4"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="140dp"
-            android:layout_marginTop="120dp"
-            android:text="Connection 4" />
 
-        <Button
-            android:id="@+id/btnConnection3Off"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
-            android:text="Connection 3 Off" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite"
+                    android:padding="2dp">
+                    <ImageView
+                        android:id="@+id/imageAppliance1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_blur_off_black_24dp"
+                        android:background="@drawable/circlebackgroundpurple"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:text="Appliance 1"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorLightGreyLine"
+                        android:layout_margin="10dp"/>
 
-        <Button
-            android:id="@+id/btnConnection3"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:text="Connection 3" />
-        <Button
-            android:id="@+id/btnConnection2Off"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="140dp"
-            android:layout_marginTop="60dp"
-            android:text="Connection 2 Off" />
+                    <Switch
+                        android:id="@+id/switchBtn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/colorWhite" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="145dp"
+                android:layout_height="150dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorWhite">
 
-        <Button
-            android:id="@+id/btnConnection2"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="140dp"
-            android:text="Connection 2" />
 
-        <Button
-            android:id="@+id/btnConnection1"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:text="Connection 1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite"
+                    android:padding="2dp">
+                    <ImageView
+                        android:id="@+id/imageAppliance2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_blur_off_black_24dp"
+                        android:background="@drawable/circlebackgroundpink"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:text="Appliance 2"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorLightGreyLine"
+                        android:layout_margin="10dp"/>
 
-        <Button
-            android:id="@+id/btnConnection1Off"
-            android:layout_width="130dp"
+                    <Switch
+                        android:id="@+id/switchBtn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/colorWhite" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout02"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="Connection 1 Off" />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            >
+            <androidx.cardview.widget.CardView
+                android:layout_width="145dp"
+                android:layout_height="150dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorWhite">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite"
+                    android:padding="2dp">
+                    <ImageView
+                        android:id="@+id/imageAppliance3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_blur_off_black_24dp"
+                        android:background="@drawable/circlebackgroundgreen"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:text="Appliance 3"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorLightGreyLine"
+                        android:layout_margin="10dp"/>
+
+                    <Switch
+                        android:id="@+id/switchBtn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/colorWhite" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="145dp"
+                android:layout_height="150dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorWhite">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite"
+                    android:padding="2dp">
+                    <ImageView
+                        android:id="@+id/imageAppliance4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_blur_off_black_24dp"
+                        android:background="@drawable/circlebackgroundyellow"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:text="Appliance 4"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorLightGreyLine"
+                        android:layout_margin="10dp"/>
+
+                    <Switch
+                        android:id="@+id/switchBtn4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/colorWhite" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <androidx.cardview.widget.CardView
+                android:layout_width="300dp"
+                android:layout_height="150dp"
+                android:background="@color/colorWhite"
+                android:layout_margin="1dp">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite"
+                    android:padding="10dp">
+                    <ImageView
+                        android:id="@+id/imageAllOff"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_blur_off_black_24dp"
+                        android:background="@drawable/circlebackgroundlightgreen"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+                        android:text="All Appliances Off"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorLightGreyLine"
+                        android:layout_margin="10dp"/>
+
+                    <Switch
+                        android:id="@+id/switchBtnAllOff"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:background="@color/colorWhite" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+
+        <Spinner
+            android:id="@+id/pairedlistSpinner"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            >
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:id="@+id/connect"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:drawableLeft="@drawable/ic_bluetooth_connected_black_24dp"
+                android:background="@color/colorWhite"
+                android:text="Connect"/>
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:id="@+id/disconnect"
+                android:drawableLeft="@drawable/ic_bluetooth_disabled_black_24dp"
+                android:padding="10dp"
+                android:layout_margin="5dp"
+                android:background="@color/colorWhite"
+                android:text="Disconnect"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/status"
-            android:layout_marginTop="250dp"
-            android:layout_width="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status" />
-
-
-    </RelativeLayout>
+            android:text="Status"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
