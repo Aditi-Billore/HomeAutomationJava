@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<BluetoothDevices> pairedDeviceAdapterSpinner;
     ThreadConnectBTdevice myThreadConnectBTdevice;
     ThreadConnected myThreadConnected;
+    BluetoothSocket connectedBluetoothSocket;
+    InputStream connectedInputStream;
+    OutputStream connectedOutputStream;
+
     private UUID myUUID;
 
     @Override
@@ -63,15 +67,25 @@ public class MainActivity extends AppCompatActivity {
         // textInfo = (TextView)findViewById(R.id.info);
         textStatus = (TextView) findViewById(R.id.status);
         spinnerPairedDevice = (Spinner) findViewById(R.id.pairedlistSpinner);
-        btnConnect = (Button) findViewById(R.id.connect);
-        btnDisconnect = (Button) findViewById(R.id.disconnect);
         inputPane = (LinearLayout) findViewById(R.id.inputpane);
 
+        btnConnect = (Button) findViewById(R.id.connect);
         btnConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 myThreadConnectBTdevice = new ThreadConnectBTdevice(BluetoothDevice.getDevice());
                 myThreadConnectBTdevice.start();
+            }
+        });
+
+        btnDisconnect = (Button) findViewById(R.id.disconnect);
+        btnDisconnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Disconnect Bluetooth","Disconnecting Bluetooth");
+                if (myThreadConnectBTdevice != null) {
+                    myThreadConnectBTdevice.cancel();
+                }
             }
         });
 
@@ -90,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn1.setChecked(false);
                     }
                 }
                 else
@@ -103,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn1.setChecked(true);
                     }
                 }
             }
@@ -119,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myThreadConnected != null) {
                         int data = 103;
                         myThreadConnected.write(data);
-                        imageAppliance1.setImageResource(R.drawable.ic_blur_on_black_24dp);
+                        imageAppliance2.setImageResource(R.drawable.ic_blur_on_black_24dp);
                     }else{
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn2.setChecked(false);
                     }
                 }
                 else
@@ -132,12 +146,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myThreadConnected != null) {
                         int data = 104;
                         myThreadConnected.write(data);
-                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                        imageAppliance2.setImageResource(R.drawable.ic_blur_off_black_24dp);
                     }else{
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn2.setChecked(true);
                     }
                 }
             }
@@ -153,12 +167,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myThreadConnected != null) {
                         int data = 105;
                         myThreadConnected.write(data);
-                        imageAppliance1.setImageResource(R.drawable.ic_blur_on_black_24dp);
+                        imageAppliance3.setImageResource(R.drawable.ic_blur_on_black_24dp);
                     }else{
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn3.setChecked(false);
                     }
                 }
                 else
@@ -166,12 +180,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myThreadConnected != null) {
                         int data = 106;
                         myThreadConnected.write(data);
-                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                        imageAppliance3.setImageResource(R.drawable.ic_blur_off_black_24dp);
                     }else{
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn3.setChecked(true);
                     }
                 }
             }
@@ -187,12 +201,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myThreadConnected != null) {
                         int data = 107;
                         myThreadConnected.write(data);
-                        imageAppliance1.setImageResource(R.drawable.ic_blur_on_black_24dp);
+                        imageAppliance4.setImageResource(R.drawable.ic_blur_on_black_24dp);
                     }else{
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn4.setChecked(false);
                     }
                 }
                 else
@@ -200,12 +214,12 @@ public class MainActivity extends AppCompatActivity {
                     if (myThreadConnected != null) {
                         int data = 108;
                         myThreadConnected.write(data);
-                        imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                        imageAppliance4.setImageResource(R.drawable.ic_blur_off_black_24dp);
                     }else{
                         Toast.makeText(MainActivity.this,
                                 "Please connect a bluetooth device.",
                                 Toast.LENGTH_LONG).show();
-
+                        switchBtn4.setChecked(true);
                     }
                 }
             }
@@ -222,18 +236,28 @@ public class MainActivity extends AppCompatActivity {
                         int[] data = new int[]{102,104,106,108};
                         for(int i =0;i<4;i++) {
                             myThreadConnected.write(data[i]);
+                            Log.d("Sending data","number "+data[i]);
+
+                            Toast.makeText(MainActivity.this,
+                                    "Sending Data "+data[i],
+                                    Toast.LENGTH_LONG).show();
                         }
                         imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
                         imageAppliance2.setImageResource(R.drawable.ic_blur_off_black_24dp);
                         imageAppliance3.setImageResource(R.drawable.ic_blur_off_black_24dp);
                         imageAppliance4.setImageResource(R.drawable.ic_blur_off_black_24dp);
-                    }
-                }
-                else{
-                    Toast.makeText(MainActivity.this,
-                            "Please connect a bluetooth device.",
-                            Toast.LENGTH_LONG).show();
+                        switchBtn1.setChecked(false);
+                        switchBtn2.setChecked(false);
+                        switchBtn3.setChecked(false);
+                        switchBtn4.setChecked(false);
 
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this,
+                                "Please connect a bluetooth device.",
+                                Toast.LENGTH_LONG).show();
+                        switchBtnAllOff.setChecked(false);
+                    }
                 }
             }
         });
@@ -300,10 +324,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                     BluetoothDevice = (BluetoothDevices) parent.getSelectedItem();
-                    Toast.makeText(MainActivity.this,
-                            "Name: " + BluetoothDevice.getDevice().getName() + "\n"
-                                    + "Address: " + BluetoothDevice.getDevice().getAddress(),
-                            Toast.LENGTH_LONG).show();
 
 //                    Toast.makeText(MainActivity.this,
 //                            "Name: " + BluetoothDevice.getDevice().getName() + "\n"
@@ -360,7 +380,7 @@ public class MainActivity extends AppCompatActivity {
     ThreadConnectBTdevice:
     Background Thread to handle BlueTooth connecting
     */
-    private class ThreadConnectBTdevice extends Thread {
+    public class ThreadConnectBTdevice extends Thread {
 
         private final BluetoothDevice bluetoothDevice;
         private BluetoothSocket bluetoothSocket = null;
@@ -387,7 +407,13 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
+
                         textStatus.setText("Connected!");
+                        Toast.makeText(MainActivity.this,
+                                "Name: " + BluetoothDevice.getDevice().getName() + "\n"
+                                        + "Address: " + BluetoothDevice.getDevice().getAddress(),
+                                Toast.LENGTH_LONG).show();
+
                     }
                 });
             } catch (IOException e) {
@@ -419,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void run() {
-                        //textStatus.setText(msgconnected);
+                        textStatus.setText("Connected!");
 
                         inputPane.setVisibility(View.VISIBLE);
                     }
@@ -441,13 +467,29 @@ public class MainActivity extends AppCompatActivity {
                 imageAppliance2.setImageResource(R.drawable.ic_blur_off_black_24dp);
                 imageAppliance3.setImageResource(R.drawable.ic_blur_off_black_24dp);
                 imageAppliance4.setImageResource(R.drawable.ic_blur_off_black_24dp);
+                switchBtn1.setChecked(false);
+                switchBtn2.setChecked(false);
+                switchBtn3.setChecked(false);
+                switchBtn4.setChecked(false);
+                switchBtnAllOff.setChecked(false);
             }
             Toast.makeText(getApplicationContext(),
                     "close bluetoothSocket",
                     Toast.LENGTH_LONG).show();
 
             try {
+                    connectedInputStream.close();
+                    connectedOutputStream.close();
+                    myThreadConnected = null;
+
                 bluetoothSocket.close();
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        textStatus.setText("Disconnected!");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -462,9 +504,6 @@ public class MainActivity extends AppCompatActivity {
     after connected
      */
     private class ThreadConnected extends Thread {
-        private final BluetoothSocket connectedBluetoothSocket;
-        private final InputStream connectedInputStream;
-        private final OutputStream connectedOutputStream;
 
         public ThreadConnected(BluetoothSocket socket) {
             connectedBluetoothSocket = socket;
@@ -489,6 +528,7 @@ public class MainActivity extends AppCompatActivity {
 
             while (true) {
                 try {
+
                     bytes = connectedInputStream.read(buffer);
                     String strReceived = new String(buffer, 0, bytes);
                     /*final String msgReceived = String.valueOf(bytes) +
@@ -512,7 +552,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void run() {
-                            textStatus.setText(msgConnectionLost);
+//                            textStatus.setText(msgConnectionLost);
                         }
                     });
                 }
@@ -527,13 +567,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        public void cancel() {
-            try {
-                connectedBluetoothSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        public void cancel() {
+//            try {
+//                connectedBluetoothSocket.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
 }
