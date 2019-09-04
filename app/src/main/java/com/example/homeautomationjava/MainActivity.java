@@ -236,11 +236,7 @@ public class MainActivity extends AppCompatActivity {
                         int[] data = new int[]{102,104,106,108};
                         for(int i =0;i<4;i++) {
                             myThreadConnected.write(data[i]);
-                            Log.d("Sending data","number "+data[i]);
 
-                            Toast.makeText(MainActivity.this,
-                                    "Sending Data "+data[i],
-                                    Toast.LENGTH_LONG).show();
                         }
                         imageAppliance1.setImageResource(R.drawable.ic_blur_off_black_24dp);
                         imageAppliance2.setImageResource(R.drawable.ic_blur_off_black_24dp);
