@@ -246,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
                         switchBtn2.setChecked(false);
                         switchBtn3.setChecked(false);
                         switchBtn4.setChecked(false);
+                        switchBtnAllOff.setChecked(false);
 
                     }
                     else{
